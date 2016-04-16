@@ -41,40 +41,37 @@ public class Main {
 	}
 	
 	public static int calculateMinimum(int numOfVillages, int numOfPoliceStations, int[] villagePositions) {
-		int[][]allDistances = new int[numOfVillages][numOfPoliceStations];
-		int[][]villageDistances = new int[numOfVillages][numOfVillages];
+		int[][]villageDistances = calculateDistance(villagePositions, numOfVillages);
+		int[][]allDistances = new int[numOfVillages + 1][numOfPoliceStations + 1];
 		
-		calculateDistance(villageDistances, villagePositions);
+		for(int i = 0; i <= numOfVillages; i++) {
+			allDistances[i][1] = villageDistances[1][i];
+		}
 		
-		for (int i = 0; i < numOfVillages; ++i) {
-			Arrays.fill(allDistances[i], Integer.MAX_VALUE / 2);
-		}
-		for (int i = 0; i < numOfVillages; ++i) {
-			allDistances[i][0] = villageDistances[0][i];
-		}
-		for (int k = 1; k < numOfPoliceStations; ++k) {
-			for (int i = 0; i < numOfPoliceStations; ++i) {
-				for (int j = 0; j < i; ++j) {
-					if (allDistances[j][k - 1] + villageDistances[j + 1][i] < allDistances[i][k]) {
-						allDistances[i][k] = allDistances[j][k - 1] + villageDistances[j + 1][i];
+		for(int j = 2; j <= numOfPoliceStations; j++) {
+			for(int k = j; k <= numOfVillages; k++) {
+				allDistances[k][j] = Integer.MAX_VALUE;
+				for(int l = 0; l < k; l++) {
+					if(allDistances[k][j] == Integer.MAX_VALUE || allDistances[k][j] > allDistances[l][j-1] + villageDistances[l+1][k]) {
+						allDistances[k][j] = allDistances[l][j-1] + villageDistances[l+1][k];
 					}
 				}
 			}
 		}
-		return allDistances[numOfVillages - 1][numOfPoliceStations - 1];
+		
+		return allDistances[numOfVillages][numOfPoliceStations];
 	}
 	
-	public static void calculateDistance(int[][] villageDistances, int[] villagePositions) {
-		for (int i = 0; i < villageDistances.length - 1; ++i) {
-			for (int j = i + 1; j < villageDistances.length; ++j) {
-				int mid = (i + j) / 2;
-				for (int k = i; k < mid; ++k) {
-					villageDistances[i][j] += villagePositions[mid] - villagePositions[k];
-				}
-				for (int k = mid + 1; k <= j; ++k) {
-					villageDistances[i][j] += villagePositions[k] - villagePositions[mid];
+	static int[][] calculateDistance(int[] villagePositions, int numOfVillages) {
+		int[][] villageDistances = new int[numOfVillages+1][numOfVillages+1];
+		for(int i = 1; i <= numOfVillages; i++) {
+			for(int j = i+1; j <= numOfVillages; j++) {
+				int mid = (i+j)/2;
+				for(int k = i; k <= j; k++) {
+					villageDistances[i][j] += Math.abs(villagePositions[k-1] - villagePositions[mid - 1]);
 				}
 			}
 		}
+		return villageDistances;
 	}
 }
