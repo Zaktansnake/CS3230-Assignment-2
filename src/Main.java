@@ -5,7 +5,6 @@ public class Main {
 	public static void main(String[] args) {
 		//data types to store input
 		int answer, numOfVillages, numOfPoliceStations, villagePosition;
-		int counter = 0;
 		
 		Scanner scan = new Scanner(System.in);
 		
@@ -25,19 +24,13 @@ public class Main {
 		
 		int[] villagePositions = new int[numOfVillages];
 		
-		while(scan.hasNext()) {
+		for(int i = 0; i < numOfVillages; i++) {
 			villagePosition = scan.nextInt();
 			if(villagePosition > 10000) {
 				System.err.println("Error! Village Position is above 10,000!");
 				System.exit(0);
 			} else {
-				if(counter <= numOfVillages) {
-					villagePositions[counter] = villagePosition;
-					counter++;
-				} else {
-					System.err.println("Error! Number of Villages declared is wrong!");
-					System.exit(0);
-				}
+				villagePositions[i] = villagePosition;
 			}
 		}
 		
@@ -59,11 +52,11 @@ public class Main {
 		for (int i = 0; i < numOfVillages; ++i) {
 			allDistances[i][0] = villageDistances[0][i];
 		}
-		for (int l = 1; l < numOfPoliceStations; ++l) {
+		for (int k = 1; k < numOfPoliceStations; ++k) {
 			for (int i = 0; i < numOfPoliceStations; ++i) {
 				for (int j = 0; j < i; ++j) {
-					if (allDistances[j][l - 1] + villageDistances[j + 1][i] < allDistances[i][l]) {
-						allDistances[i][l] = allDistances[j][l - 1] + villageDistances[j + 1][i];
+					if (allDistances[j][k - 1] + villageDistances[j + 1][i] < allDistances[i][k]) {
+						allDistances[i][k] = allDistances[j][k - 1] + villageDistances[j + 1][i];
 					}
 				}
 			}
