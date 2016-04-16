@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		//data types to store input
-		int numOfVillages, numOfPoliceStations, villagePosition;
+		int numOfVillages, numOfPoliceStations, villagePosition, counter = 0;
 		ArrayList<Integer> positionOfVillages = new ArrayList<Integer>();
 		
 		Scanner scan = new Scanner(System.in);
@@ -12,18 +12,35 @@ public class Main {
 		numOfVillages = scan.nextInt();
 		numOfPoliceStations = scan.nextInt();
 		
-		while(scan.hasNext()) {
-			villagePosition = scan.nextInt();
-			positionOfVillages.add(villagePosition);
+		if(numOfVillages > 300) {
+			System.err.println("Error! Number of Villages is above 300!");
+			System.exit(0);
+		} else if(numOfPoliceStations > 30) {
+			System.err.println("Error! Number of Police Stations is above 30!");
+			System.exit(0);
+		} else if (numOfPoliceStations >= numOfVillages) {
+			System.err.println("Error! Number of Police Stations exceed number of Villages!");
+			System.exit(0);
 		}
 		
-		int answer = calculateMinimum(numOfVillages, numOfPoliceStations, positionOfVillages);
+		while(scan.hasNext()) {
+			counter++;
+			villagePosition = scan.nextInt();
+			if(villagePosition > 10000) {
+				System.err.println("Error! Village Position is above 10,000!");
+				System.exit(0);
+			} else {
+				positionOfVillages.add(villagePosition);
+			}
+		}
 		
-		System.out.print(answer);
+		int answer = calculateMinimum(numOfVillages, numOfPoliceStations, counter, positionOfVillages);
+		
+		System.out.println(answer);
 		scan.close();
 	}
 	
-	public static int calculateMinimum(int nov, int nops, ArrayList<Integer> pov) {
+	public static int calculateMinimum(int nov, int nops, int c, ArrayList<Integer> pov) {
 		return 9;
 	}
 }
